@@ -1,4 +1,4 @@
-# Logs
+gi# Logs
 
 *.log
 npm-debug.log*
@@ -14,7 +14,6 @@ dist-ssr
 # Ignore Firebase service account credentials
 astrovendor-firebase-adminsdk.json
 ohmastrocustomer-firebase-adminsdk.json
-
 # (Optional: ignore all firebase credential files)
 *firebase-adminsdk.json
 
