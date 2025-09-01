@@ -11,11 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
-# Ignore Firebase service account credentials
-astrovendor-firebase-adminsdk.json
-ohmastrocustomer-firebase-adminsdk.json
-# (Optional: ignore all firebase credential files)
-*firebase-adminsdk.json
+
+
 
 .env
 # Editor directories and files
