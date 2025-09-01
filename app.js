@@ -32,7 +32,7 @@ const chatModel = require("./models/chatModel.js");
 const { protect, socketAuthenticator, } = require("./middleware/authMiddleware.js");
 const enquiryRouter = require("./routes/enquiry.js");
 const userModel = require("./models/userModel.js");
-const msg91 = require('msg91').default;
+const msg91 = require("msg91");
 require('dotenv').config()
 
 const app = express();
@@ -153,7 +153,10 @@ app.post("/api/getRoomId", protect, (req, res) => {
   res.status(200).json({ success: true, roomId });
 });
 
-msg91.initialize({ authKey: process.env.MSG91_AUTHKEY });
+// Initialize MSG91
+msg91.initialize({
+  authKey: process.env.MSG91_AUTHKEY,
+});
 
 // Socket.IO events
 io.on("connection", (socket) => {
