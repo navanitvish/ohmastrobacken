@@ -90,6 +90,8 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5580;
+console.log('MSG91 object:', msg91);
+console.log('Available methods:', Object.keys(msg91));
 
 app.get("/", async (req, res) => {
   res.send("ASTROLOGY APP");
@@ -153,10 +155,42 @@ app.post("/api/getRoomId", protect, (req, res) => {
   res.status(200).json({ success: true, roomId });
 });
 
-// Initialize MSG91
-msg91.initialize({
-  authKey: process.env.MSG91_AUTHKEY,
-});
+// MSG91 Configuration (Fixed for version 0.0.7)
+const msg91AuthKey = process.env.MSG91_AUTHKEY;
+
+// Helper function to send SMS using MSG91
+const sendSMS = (mobile, message) => {
+  return new Promise((resolve, reject) => {
+    const options = {
+      authkey: msg91AuthKey,
+      mobiles: mobile,
+      message: message,
+      sender: 'ASTROW', // Your registered sender ID
+      route: 4, // Transactional route
+      country: 91 // Country code for India
+    };
+
+    msg91.send(options, (error, response) => {
+      if (error) {
+        console.error('MSG91 Error:', error);
+        reject(error);
+      } else {
+        console.log('SMS sent successfully:', response);
+        resolve(response);
+      }
+    });
+  });
+};
+
+// Helper function to send OTP
+const sendOTP = async (mobile, otp) => {
+  const message = `Your OTP for Astrowani is ${otp}. Please do not share this OTP with anyone.`;
+  return sendSMS(mobile, message);
+};
+
+// Export functions for use in routes (if needed)
+app.locals.sendSMS = sendSMS;
+app.locals.sendOTP = sendOTP;
 
 // Socket.IO events
 io.on("connection", (socket) => {
